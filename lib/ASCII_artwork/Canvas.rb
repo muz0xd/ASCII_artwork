@@ -3,7 +3,7 @@ class Canvas
     @width, @height, @background = width, height, background
     @data_matrix = Array.new(height) { Array.new(width) {background} }
   end
-  
+ 
   def cell_set(x, y, symbol = '.', clean = false)
     if clean then symbol = @background end
     if (0...@width) === x && (0...@height) === y
@@ -11,55 +11,104 @@ class Canvas
     end
   end
  
-  def line_set (k0 = {x: nil, y: nil}, k1 ={x: nil, y: nil} ,
-                  symbol = '@', clean = false)
-    
-    if k0.include?(nil) || k1.include?(nil) || k0.length != 2 || k1.length != 2
-      return
-    end
-    
-    steep = (k1[:y] - k0[:y]).abs > (k1[:x] - k0[:x]).abs
-    if steep
-      k0[:x], k0[:y] = k0[:y], k0[:x]
-      k1[:x], k1[:y] = k1[:y], k1[:x]
-    end
-    if k0[:x] > k1[:x]
-      k0[:x], k1[:x] = k1[:x], k0[:x]
-      k0[:y], k1[:y] = k1[:y], k0[:y]
-    end
-    deltax = k1[:x] - k0[:x]
-    deltay = (k1[:y] - k0[:y]).abs
-    error = (deltax/2).to_i
-    y = k0[:y]
-    k0[:y] < k1[:y] ? ystep = 1 : ystep = -1
-    (k0[:x]..k1[:x]).each do |x|
-      if clean
-        steep ? cell_set(y, x, symbol, true) : cell_set(x, y, symbol, true)
-      else
-        steep ? cell_set(y, x, symbol) : cell_set(x, y, symbol)
+  def line_set (point_0 = {x: nil, y: nil},
+                point_1 = {x: nil, y: nil},
+                symbol  = '@', clean = false)
+ 
+    x0, y0, x1, y1 = point_0[:x], point_0[:y], point_1[:x], point_1[:y]
+    return unless x0 && y0 && x1 && y1
+ 
+    delta_x = (x1 - x0).abs
+    delta_y = (y1 - y0).abs
+    sign_x  = x0 < x1 ? 1 : -1
+    sign_y  = y0 < y1 ? 1 : -1
+ 
+    error = delta_x - delta_y
+ 
+    cell_set(x1, y1, symbol, clean)
+    while(x0 != x1 || y0 != y1)
+      cell_set(x0, y0, symbol, clean)
+      tmp_error = error * 2
+ 
+      if tmp_error > -delta_y
+        error -= delta_y
+        x0 += sign_x
       end
-      error -= deltay
-      if error < 0
-        y += ystep
-        error += deltax
+ 
+      if tmp_error < delta_x
+        error += delta_x
+        y0 += sign_y
       end
     end
   end
-  
+ 
+  def circle_set(point = {x: nil, y: nil}, radius = nil, symbol = '@', clean = false)
+    x0, y0 = point[:x], point[:y]
+    return unless x0 && y0 && radius
+ 
+    x = 0
+    y = radius
+    delta = 2 - 2 * radius
+    error = 0
+ 
+    while(y >= 0)
+      cell_set(x0 + x, y0 + y, symbol, clean)
+      cell_set(x0 + x, y0 - y, symbol, clean)
+      cell_set(x0 - x, y0 + y, symbol, clean)
+      cell_set(x0 - x, y0 - y, symbol, clean)
+ 
+      error = 2 * (delta + y) - 1
+      if(delta < 0 && error <= 0)
+        x += 1
+        delta += 2 * x + 1
+        next
+      end
+ 
+      error = 2 * (delta - x) - 1
+      if(delta > 0 && error > 0)
+        y -= 1
+        delta += 1 - 2 * y
+        next
+      end
+ 
+      x += 1
+      delta += 2 * (x - y)
+      y -= 1
+    end
+  end
+ 
   def p_console
     @data_matrix.each do |line|
       line.each {|symbol| print symbol}
       puts
     end
   end
-  
+ 
   def p_file(filename)
     bmp = BMP::Writer.new(@width, @height)
     @data_matrix.each_with_index do |line, i|
       line.each_with_index do |symbol, j|
-        bmp[j, i] = symbol == @background ? "ffffff" : "000000"
+        bmp[j, i] = symbol == @background ? BMP.random_background_color : "000000"
       end
     end
     bmp.save_as(filename)
+  end
+ 
+  def scale!(scale = 1)
+    old_data_matrix = @data_matrix
+ 
+    @width = @width * scale
+    @height = @height * scale
+    @data_matrix = Array.new(@height) { Array.new(@width) {@background} }
+ 
+    @data_matrix.each_with_index do |line, i|
+      line.each_with_index do |symbol, j|
+        original_i = i / scale
+        original_j = j / scale
+        original_symbol = old_data_matrix[original_i][original_j]
+        cell_set(j, i, original_symbol)
+      end
+    end
+    self
   end
 end

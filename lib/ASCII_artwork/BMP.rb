@@ -1,4 +1,19 @@
-class BMP 
+class BMP
+
+@@BACKGROUND_COLORS = [
+  "FF0000",
+  "00FF00",
+  "0000FF",
+  "FFFF00",
+  "00FFFF",
+  "FF00FF",
+  "C0C0C0",
+  "FFFFFF"
+]
+  def BMP.random_background_color
+    @@BACKGROUND_COLORS[rand(@@BACKGROUND_COLORS.count)]
+  end
+  
   class Writer
     PIXEL_ARRAY_OFFSET = 54
     BITS_PER_PIXEL     = 24
@@ -28,25 +43,22 @@ class BMP
     end
  
     def file_size
-      PIXEL_ARRAY_OFFSET + pixel_array_size 
+      PIXEL_ARRAY_OFFSET + pixel_array_size
     end
  
     def pixel_array_size
-      ((BITS_PER_PIXEL*@width)/32.0).ceil*4*@height
+      ((BITS_PER_PIXEL * @width) / 32.0).ceil * 4 * @height
     end
  
     def write_dib_header(file)
       file << [DIB_HEADER_SIZE, @width, @height, 1, BITS_PER_PIXEL,
-               0, pixel_array_size, PIXELS_PER_METER, PIXELS_PER_METER, 
+               0, pixel_array_size, PIXELS_PER_METER, PIXELS_PER_METER,
                0, 0].pack("V3v2V6")
     end
  
     def write_pixel_array(file)
       @pixels.reverse_each do |row|
-        row.each do |color|
-          file << pixel_binstring(color)
-        end
- 
+        row.each { |color| file << pixel_binstring(color) }
         file << row_padding
       end
     end
