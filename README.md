@@ -17,6 +17,7 @@ typewriter) such as Courier for presentation.
 
 # License
 
-Copyright (c) 2013
+Copyright (c) 2013 muz0xd
+Copyright (c) 2013 DrunkenElk
 
 Released under the MIT license. See `LICENSE` for details.
