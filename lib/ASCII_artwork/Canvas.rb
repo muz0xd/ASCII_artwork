@@ -42,7 +42,9 @@ class Canvas
     end
   end
  
-  def circle_set(point = {x: nil, y: nil}, radius = nil, symbol = '@', clean = false)
+  def circle_set(point = {x: nil, y: nil}, radius = nil, symbol = '@', 
+                  clean = false)
+                  
     x0, y0 = point[:x], point[:y]
     return unless x0 && y0 && radius
  
@@ -84,11 +86,22 @@ class Canvas
     end
   end
  
-  def p_file(filename)
+  def p_file(filename, options = {})
+    default_options = {foreground: "000000", background: "ffffff", random: false}
+    options = default_options.merge(options)
+
     bmp = BMP::Writer.new(@width, @height)
     @data_matrix.each_with_index do |line, i|
       line.each_with_index do |symbol, j|
-        bmp[j, i] = symbol == @background ? BMP.random_background_color : "000000"
+        bmp[j, i] = if symbol == @background
+          if options[:random]
+            random_background_color
+          else
+            options[:background]
+          end
+        else
+          options[:foreground]
+        end
       end
     end
     bmp.save_as(filename)
@@ -96,11 +109,11 @@ class Canvas
  
   def scale!(scale = 1)
     old_data_matrix = @data_matrix
- 
+
     @width = @width * scale
     @height = @height * scale
     @data_matrix = Array.new(@height) { Array.new(@width) {@background} }
- 
+
     @data_matrix.each_with_index do |line, i|
       line.each_with_index do |symbol, j|
         original_i = i / scale
