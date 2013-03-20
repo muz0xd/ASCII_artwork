@@ -22,6 +22,13 @@ class Canvas
                            options)
   end
   
+  def draw_cubicspline(points = [{x: nil, y: nil}, {x: nil, y: nil} ],
+                       symbol = '@', options = {})
+
+    DrawPrimitives::cubicspline(@data_matrix, @background, points,
+                                symbol, options)
+  end  
+  
   def p_console
     @data_matrix.each do |line|
       line.each {|symbol| print symbol}
