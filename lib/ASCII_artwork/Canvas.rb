@@ -37,7 +37,8 @@ class Canvas
   end
  
   def p_file(filename, options = {})
-    default_options = {foreground: "000000", background: "ffffff", random: false}
+    default_options = {foreground: "000000", background: "ffffff",
+                       random: false}
     options = default_options.merge(options)
 
     bmp = BMP::Writer.new(@width, @height)
@@ -69,7 +70,7 @@ class Canvas
         original_i = i / scale
         original_j = j / scale
         original_symbol = old_data_matrix[original_i][original_j]
-        cell_set(j, i, original_symbol)
+        draw_cell(j, i, original_symbol)
       end
     end
     self

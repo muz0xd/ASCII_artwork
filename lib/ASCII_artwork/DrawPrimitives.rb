@@ -109,14 +109,12 @@ class DrawPrimitives
     t[0] = Array.new(_h)
     t[1] = Array.new(_h)
     _next = Array.new(2)
-    _f=1
-    _c=0
-    _j=0 
-    l, v, bP, ac, bF, _r, aJ, aS, bk, bb, h, aR, bM, _v, ab, _k = nil
+    _f = 1
+    _c = _j = 0
 
     for i in 0...bo
       ap[_j] = aM[_j]
-      _j+=1
+      _j += 1
     end
 
     _v=0;
@@ -135,95 +133,97 @@ class DrawPrimitives
     _k=1
 
     for i in 0..._l-1
-      t[0][_k]=_o[_k]-_o[i]
-      t[1][_k]=(_t[_k]-_t[i])/t[0][_k]
+      t[0][_k] = _o[_k] - _o[i]
+      t[1][_k] = (_t[_k] - _t[i]) / t[0][_k]
       _k+=1    
     end
 
-    if _l==2
-      t[1][0]=t[0][0]=1.0
-      _g[0]=2.0*t[1][1]
+    if _l == 2
+      t[1][0] = t[0][0] = 1.0
+      _g[0] = 2.0 * t[1][1]
     else
-      v=l=t[0][1]
-      t[1][0]=t[0][2]
-      t[0][0]=v+t[0][2]
-      l*=l*t[1][2]
-      _g[0]=((v+2.0*t[0][0])*t[1][1]*t[0][2]+l)/t[0][0]
+      v = l = t[0][1]
+      t[1][0] = t[0][2]
+      t[0][0] = v + t[0][2]
+      l *= l * t[1][2]
+      _g[0] = ((v + 2.0 * t[0][0]) * t[1][1] * t[0][2] + l) / t[0][0]
     end
 
     ab=_l-1
 
     for i in 1...ab
-      v= -(t[0][i+1]/t[1][i-1])
-      _g[i]=v*_g[i-1]+3.0*(t[0][i]*t[1][i+1]+t[0][i+1]*t[1][i])
-      t[1][i]=v*t[0][i-1]+2.0*(t[0][i]+t[0][i+1])
+      v = -(t[0][i+1] / t[1][i-1])
+      _g[i] = v * _g[i-1] + 3.0 * (t[0][i] * t[1][i+1] + t[0][i+1] * t[1][i])
+      t[1][i] = v * t[0][i-1] + 2.0 * (t[0][i] + t[0][i+1])
     end
 
-    if _l==2
-      _g[1]=t[1][1]
+    if _l == 2
+      _g[1] = t[1][1]
     else
-      if _l==3
-        _g[2]=2.0*t[1][2]
-        t[1][2]=1.0
-        v= -(1.0/t[1][1])
+      if _l == 3
+        _g[2] = 2.0 * t[1][2]
+        t[1][2] = 1.0
+        v= -(1.0 / t[1][1])
       else
-        v=t[0][_l-2]+t[0][_l-1]
-        l=t[0][_l-1]*t[0][_l-1]*(_t[_l-2]-_t[_l-3]);l/=t[0][_l-2]
-        _g[_l-1]=((t[0][_l-1]+2.0*v)*t[1][_l-1]*t[0][_l-2]+l)/v
-        v= -(v/t[1][_l-2]);t[1][_l-1]=t[0][_l-2]
+        v = t[0][_l-2] + t[0][_l-1]
+        l = t[0][_l-1] * t[0][_l-1] * (_t[_l-2] - _t[_l-3])
+        l /= t[0][_l-2]
+        _g[_l-1] = ((t[0][_l-1] + 2.0 * v) * t[1][_l-1] * t[0][_l-2] + l) / v
+        v = -(v / t[1][_l-2])
+        t[1][_l-1] = t[0][_l-2]
       end
-      t[1][_l-1] = v*t[0][_l-2]+t[1][_l-1]
-      _g[_l-1] = (v*_g[_l-2]+_g[_l-1])/t[1][_l-1]
+      t[1][_l-1] = v*t[0][_l-2] + t[1][_l-1]
+      _g[_l-1] = (v*_g[_l-2] + _g[_l-1]) / t[1][_l-1]
     end
     
     (_l-2).downto(0) do |i| 
-      _g[i]=(_g[i]-t[0][i]*_g[i+1])/t[1][i]
+      _g[i] = (_g[i] - t[0][i] * _g[i + 1]) / t[1][i]
     end
 
-    while _c<_j
+    while _c < _j
       for _v in _c..._j
-        if ap[_v]>=_o[_f] then break end
+        if ap[_v] >= _o[_f] then break end
       end
-      if _v<_j
-        if _f==(_l-1) then _v=_j end
+      if _v < _j
+        if _f == (_l-1) then _v = _j end
       end
-      ab=_v-_c
+      ab = _v - _c
       
-      if ab>0
+      if ab > 0
         aR = h = _o[_f]-_o[_f-1]
         _next[1] = _next[0] = 0
         bM = 0.0
-        aS = (_t[_f]-_t[_f-1])/h
-        bk = (_g[_f-1]-aS)/h
-        bb = (_g[_f]-aS)/h
-        ac = -(bk+bk+bb)
-        bF = ac+ac
-        _r = (bk+bb)/h
-        aJ = _r+_r+_r
+        aS = (_t[_f] - _t[_f-1]) / h
+        bk = (_g[_f-1] - aS) / h
+        bb = (_g[_f] - aS) / h
+        ac = -(bk + bk + bb)
+        bF = ac + ac
+        _r = (bk + bb) / h
+        aJ = _r + _r + _r
         
         for k in 0...ab
-          l = ap[_c+k]-_o[_f-1]
-          bm[_c+k] = _t[_f-1]+l*(_g[_f-1]+l*(ac+l*_r))
-          if l<bM then _next[0]=_next[0]+1 end
-          if l>aR then _next[1]=_next[1]+1 end
+          l = ap[_c+k] - _o[_f-1]
+          bm[_c+k] = _t[_f-1] + l * (_g[_f-1] + l * (ac + l * _r))
+          if l < bM then _next[0] = _next[0] + 1 end
+          if l > aR then _next[1] = _next[1] + 1 end
         end
         
-        if (_next[0]>0)&&(_f!=1)
+        if (_next[0] > 0) && (_f != 1)
           for k in _c..._v
-            if ap[k]<_o[_f-1] then break end
+            if ap[k] < _o[_f-1] then break end
           end
-          _v=k
+          _v = k
           for k in 0..._f
-            if ap[_v]<_o[k] then break end
+            if ap[_v] < _o[k] then break end
           end
-          _f= ((k-1)>0) ? (k-1) : 0
+          _f = ((k-1) > 0) ? (k-1) : 0
         end
-        _c=_v
+        _c = _v
       end
-      _f+=1
-      if _f>=_l then break end
+      _f += 1
+      if _f >= _l then break end
     end
-    
+
     bo.times do |i|
       self.cell(data_matrix, background, aM[i], bm[i].round, symbol, options)
     end
