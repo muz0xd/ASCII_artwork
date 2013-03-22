@@ -4,8 +4,8 @@ class Canvas
     @data_matrix = Array.new(height) { Array.new(width) {background} }
   end
  
-  def draw_cell(x, y, symbol = '.', options = {})
-    DrawPrimitives::cell(@data_matrix, @background, x, y, symbol, options)
+  def draw_cell(point = {x: nil, y: nil}, symbol = '.', options = {})
+    DrawPrimitives::cell(@data_matrix, @background, point, symbol, options)
   end
  
   def draw_line(point_0 = {x: nil, y: nil}, point_1 = {x: nil, y: nil},

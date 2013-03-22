@@ -1,11 +1,13 @@
 class DrawPrimitives
-  def self.cell(data_matrix, background, x, y, symbol = '.', options = {})
+  def self.cell(data_matrix, background, point = {x: nil, y: nil}, symbol = '.',
+                options = {})
     default_options = {clean: false}
     options = default_options.merge(options)
     
     if options[:clean] then symbol = background end
-    if (0...data_matrix[0].size) === x && (0...data_matrix.size) === y
-      data_matrix[y][x] = symbol
+    if (0...data_matrix[0].size) === point[:x] &&
+       (0...data_matrix.size) === point[:y]
+      data_matrix[point[:y]][point[:x]] = symbol
     end
   end
 
@@ -25,9 +27,9 @@ class DrawPrimitives
  
     error = delta_x - delta_y
  
-    self.cell(data_matrix, background, x1, y1, symbol, options)
+    self.cell(data_matrix, background, {x: x1, y: y1}, symbol, options)
     while(x0 != x1 || y0 != y1)
-      self.cell(data_matrix, background, x0, y0, symbol, options)
+      self.cell(data_matrix, background, {x: x0, y: y0}, symbol, options)
       tmp_error = error * 2
  
       if tmp_error > -delta_y
@@ -57,10 +59,10 @@ class DrawPrimitives
     error = 0
  
     while(y >= 0)
-      self.cell(data_matrix, background, x0 + x, y0 + y, symbol, options)
-      self.cell(data_matrix, background, x0 + x, y0 - y, symbol, options)
-      self.cell(data_matrix, background, x0 - x, y0 + y, symbol, options)
-      self.cell(data_matrix, background, x0 - x, y0 - y, symbol, options)
+      self.cell(data_matrix, background, {x: x0 + x, y: y0 + y}, symbol, options)
+      self.cell(data_matrix, background, {x: x0 + x, y: y0 - y}, symbol, options)
+      self.cell(data_matrix, background, {x: x0 - x, y: y0 + y}, symbol, options)
+      self.cell(data_matrix, background, {x: x0 - x, y: y0 - y}, symbol, options)
  
       error = 2 * (delta + y) - 1
       if(delta < 0 && error <= 0)
@@ -225,7 +227,7 @@ class DrawPrimitives
     end
 
     bo.times do |i|
-      self.cell(data_matrix, background, aM[i], bm[i].round, symbol, options)
+      self.cell(data_matrix, background, {x: aM[i], y: bm[i].round}, symbol, options)
     end
   end  
 end
