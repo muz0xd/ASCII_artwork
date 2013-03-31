@@ -1,3 +1,4 @@
+# source: https://practicingruby.com/articles/shared/oelhlibhtlkx
 class BMP
 
   @@BACKGROUND_COLORS = [
@@ -76,7 +77,6 @@ class BMP
   # bmp = BMP::Reader.new("example1.bmp")
   # p bmp.width  #=> 2
   # p bmp.height #=> 2
-  #
   # p bmp[0,0] #=> "ff0000"
   # p bmp[1,0] #=> "00ff00"
   # p bmp[0,1] #=> "0000ff"
