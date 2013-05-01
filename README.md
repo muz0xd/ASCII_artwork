@@ -11,13 +11,26 @@ used with free-form languages. Most examples of ASCII art require a
 fixed-width font (non-proportional fonts, as on a traditional 
 typewriter) such as Courier for presentation.
 
-# Installation
-
-    $ gem install ASCII_artwork - yet not done!
-
-# License
-
-Copyright (c) 2013 muz0xd  
-Copyright (c) 2013 DrunkenElk
-
-Released under the MIT license. See `LICENSE` for details.
+                       #########  #########                                                         
+                   ####         ##         ##                                                       
+                ###              #        #####                                                     
+              ##                 #  ######     #                                                    
+            ##                  ####            #                                                   
+          ##                   # #              #                                                   
+         #                    #   #             #                                                   
+        #                    #     #           ##                                                   
+       #                    #       #         # #                                                   
+      #                   ##         #       # #                                                    
+     #                  ##            #     #  #                                                    
+                      ###              #   #   #                                                    
+    #              ### ################## #    #                                                    
+     #         ####    #                ##     #                                                    
+    ###########       #               ##       #                                                    
+    # ##              #              #        #                                                     
+    #   ##           #             ##         #                                                     
+    #     ##         #          ###           #                                                     
+    #       ##      #         ##           ####                                                     
+     #        ##    #      ###       ######                                                         
+      #         ## #   ####   #######                                                               
+       ##         ##### ######                                                                      
+         ###############  
