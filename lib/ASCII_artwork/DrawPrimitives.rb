@@ -112,20 +112,17 @@ class DrawPrimitives
     t[1] = Array.new(_h)
     _next = Array.new(2)
     _f = 1
-    _c = _j = 0
-
-    for i in 0...bo
-      ap[_j] = aM[_j]
-      _j += 1
+    _c = _v = 0
+    _j = bo
+    
+    bo.times do |i|
+      ap[i] = aM[i]
     end
 
-    _v=0;
-
-    for i in 0..._l
+    _l.times do |i|
       v = (bG[_v]).to_f
       bP = (bH[_v]).to_f
       _v+=1
-
       unless (v.nan? && bP.nan?)
         _o[i] = v
         _t[i] = bP
@@ -134,7 +131,7 @@ class DrawPrimitives
 
     _k=1
 
-    for i in 0..._l-1
+    (_l-1).times do |i|
       t[0][_k] = _o[_k] - _o[i]
       t[1][_k] = (_t[_k] - _t[i]) / t[0][_k]
       _k+=1    
@@ -153,7 +150,7 @@ class DrawPrimitives
 
     ab=_l-1
 
-    for i in 1...ab
+    (1...ab).each do |i|
       v = -(t[0][i+1] / t[1][i-1])
       _g[i] = v * _g[i-1] + 3.0 * (t[0][i] * t[1][i+1] + t[0][i+1] * t[1][i])
       t[1][i] = v * t[0][i-1] + 2.0 * (t[0][i] + t[0][i+1])
@@ -203,7 +200,7 @@ class DrawPrimitives
         _r = (bk + bb) / h
         aJ = _r + _r + _r
         
-        for k in 0...ab
+        (0...ab).each do |k|
           l = ap[_c+k] - _o[_f-1]
           bm[_c+k] = _t[_f-1] + l * (_g[_f-1] + l * (ac + l * _r))
           if l < bM then _next[0] = _next[0] + 1 end
